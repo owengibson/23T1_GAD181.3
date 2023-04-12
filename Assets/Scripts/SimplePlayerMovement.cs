@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GAD181_3
+namespace MeadowMateys
 {
     public class SimplePlayerMovement : MonoBehaviour
     {
@@ -12,26 +12,26 @@ namespace GAD181_3
         [SerializeField] private float climbSpeed;
         [SerializeField] private LayerMask levelLayerMask;
 
-        private bool isLadder;
-        private bool isClimbing;
+        private bool _isLadder;
+        private bool _isClimbing;
 
-        private Rigidbody2D rb;
-        private SpriteRenderer sr;
-        private BoxCollider2D bc;
-        private Animator anim;
+        private Rigidbody2D _rigidbody;
+        private SpriteRenderer _spriteRenderer;
+        private BoxCollider2D _boxCollider2D;
+        private Animator _animator;
 
         private void Start()
         {
-            rb = GetComponent<Rigidbody2D>();
-            sr = GetComponent<SpriteRenderer>();
-            bc = GetComponent<BoxCollider2D>();
-            anim = GetComponent<Animator>();
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _boxCollider2D = GetComponent<BoxCollider2D>();
+            _animator = GetComponent<Animator>();
         }
         private void Update()
         {
-            if (isLadder && (Input.GetKey(jumpKey) || Input.GetKey(crouchKey)))
+            if (_isLadder && (Input.GetKey(jumpKey) || Input.GetKey(crouchKey)))
             {
-                isClimbing = true;
+                _isClimbing = true;
             }
         }
         private void FixedUpdate()
@@ -42,27 +42,27 @@ namespace GAD181_3
             if (Input.GetKey(rightKey))
             {
                 transform.position += new Vector3(moveSpeed, 0, 0);
-                sr.flipX = false;
+                _spriteRenderer.flipX = false;
             }
             else if (Input.GetKey(leftKey))
             {
                 transform.position += new Vector3(-moveSpeed, 0, 0);
-                sr.flipX = true;
+                _spriteRenderer.flipX = true;
             }
 
-            if (Input.GetKey(jumpKey) && IsGrounded() && !isClimbing)
+            if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpStrength);
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpStrength);
             }
-            else if (Input.GetKey(jumpKey) && isClimbing)
+            else if (Input.GetKey(jumpKey) && _isClimbing)
             {
-                rb.gravityScale = 0f;
-                rb.velocity = new Vector2(rb.velocity.x, climbSpeed);
+                _rigidbody.gravityScale = 0f;
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, climbSpeed);
             }
-            else if (Input.GetKey(crouchKey) && isClimbing)
+            else if (Input.GetKey(crouchKey) && _isClimbing)
             {
-                rb.gravityScale = 0f;
-                rb.velocity = new Vector2(rb.velocity.x, -climbSpeed);
+                _rigidbody.gravityScale = 0f;
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -climbSpeed);
             }
 
             //---------ANIMATION CONTROL-----------//
@@ -70,35 +70,35 @@ namespace GAD181_3
             //Walk animation
             if (transform.position.x != lastXPos)
             {
-                anim.SetFloat("Speed", 1);
+                _animator.SetFloat("Speed", 1);
             }
-            else anim.SetFloat("Speed", 0);
+            else _animator.SetFloat("Speed", 0);
 
             //Jump animation
-            if (Mathf.Abs(rb.velocity.y) > 0.01f && !isClimbing)
+            if (Mathf.Abs(_rigidbody.velocity.y) > 0.01f && !_isClimbing)
             {
-                anim.SetBool("isJumping", true);
+                _animator.SetBool("isJumping", true);
             }
-            else anim.SetBool("isJumping", false);
+            else _animator.SetBool("isJumping", false);
 
             //Climb animation
-            if (Mathf.Abs(rb.velocity.y) > 0.01f && isClimbing)
+            if (Mathf.Abs(_rigidbody.velocity.y) > 0.01f && _isClimbing)
             {
-                anim.SetBool("isClimbing", true);
+                _animator.SetBool("isClimbing", true);
             }
-            else anim.SetBool("isClimbing", false);
+            else _animator.SetBool("isClimbing", false);
         }
 
         private bool IsGrounded()
         {
-            RaycastHit2D hit = Physics2D.Raycast(bc.bounds.center, Vector2.down, bc.bounds.extents.y + 0.02f, levelLayerMask);
+            RaycastHit2D hit = Physics2D.Raycast(_boxCollider2D.bounds.center, Vector2.down, _boxCollider2D.bounds.extents.y + 0.02f, levelLayerMask);
             return hit.collider != null;
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Ladder"))
             {
-                isLadder = true;
+                _isLadder = true;
             }
         }
 
@@ -106,9 +106,9 @@ namespace GAD181_3
         {
             if (collision.CompareTag("Ladder"))
             {
-                isLadder = false;
-                isClimbing = false;
-                rb.gravityScale = 3f;
+                _isLadder = false;
+                _isClimbing = false;
+                _rigidbody.gravityScale = 3f;
             }
         }
     }

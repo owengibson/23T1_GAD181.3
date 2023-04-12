@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GAD181_3
+namespace MeadowMateys
 {
     public class Parallax : MonoBehaviour
     {
-        private float length, startPos;
+        private float _length, _startPos;
         [SerializeField] private Transform cam;
         [SerializeField] private float parallaxEffect;
 
         private void Start()
         {
-            startPos = transform.position.x;
-            length = GetComponent<SpriteRenderer>().bounds.size.x;
+            _startPos = transform.position.x;
+            _length = GetComponent<SpriteRenderer>().bounds.size.x;
         }
 
         private void FixedUpdate()
@@ -21,10 +21,10 @@ namespace GAD181_3
             float temp = cam.position.x * (1 - parallaxEffect);
             float dist = cam.position.x * parallaxEffect;
 
-            transform.position = new Vector3(startPos + dist, transform.position.y, transform.position.z);
+            transform.position = new Vector3(_startPos + dist, transform.position.y, transform.position.z);
 
-            if (temp > startPos + length) startPos += length;
-            else if (temp < startPos - length) startPos -= length;
+            if (temp > _startPos + _length) _startPos += _length;
+            else if (temp < _startPos - _length) _startPos -= _length;
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GAD181_3
+namespace MeadowMateys
 {
     public class Pickup : MonoBehaviour
     {

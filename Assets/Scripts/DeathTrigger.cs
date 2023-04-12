@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GAD181_3
+namespace MeadowMateys
 {
     public class DeathTrigger : MonoBehaviour
     {
