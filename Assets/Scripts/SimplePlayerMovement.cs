@@ -10,7 +10,9 @@ namespace MeadowMateys
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpStrength;
         [SerializeField] private float climbSpeed;
+        [SerializeField] private float maxDistance;
         [SerializeField] private LayerMask levelLayerMask;
+        [SerializeField] private Transform otherPlayer;
 
         private bool _isLadder;
         private bool _isClimbing;
@@ -36,30 +38,45 @@ namespace MeadowMateys
         }
         private void FixedUpdate()
         {
+            Vector3 currentMove = Vector3.zero;
+
             float lastXPos;
             lastXPos = transform.position.x;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKey(rightKey)) // Move right
             {
-                transform.position += new Vector3(moveSpeed, 0, 0);
+                currentMove = new Vector3(moveSpeed, 0, 0);
                 _spriteRenderer.flipX = false;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey)) // Move left
             {
-                transform.position += new Vector3(-moveSpeed, 0, 0);
+                currentMove = new Vector3(-moveSpeed, 0, 0);
                 _spriteRenderer.flipX = true;
             }
 
-            if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing)
+            transform.position += currentMove;
+            float distance = Vector2.Distance(transform.position, otherPlayer.position);
+            if (distance >= maxDistance)
+            {
+                otherPlayer.position += currentMove;
+            }
+            distance = Vector2.Distance(transform.position, otherPlayer.position);
+            while (distance >= maxDistance)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
+                distance = Vector2.Distance(transform.position, otherPlayer.position);
+            }
+
+            if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing) // Jump
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpStrength);
             }
-            else if (Input.GetKey(jumpKey) && _isClimbing)
+            else if (Input.GetKey(jumpKey) && _isClimbing) // Climb up
             {
                 _rigidbody.gravityScale = 0f;
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, climbSpeed);
             }
-            else if (Input.GetKey(crouchKey) && _isClimbing)
+            else if (Input.GetKey(crouchKey) && _isClimbing) // Climb down
             {
                 _rigidbody.gravityScale = 0f;
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -climbSpeed);

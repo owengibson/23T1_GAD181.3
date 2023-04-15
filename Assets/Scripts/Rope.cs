@@ -42,8 +42,8 @@ public class Rope : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        hook.transform.position = P1.transform.position;
-        _prevBod.transform.position = P2.transform.position;
+        //hook.transform.position = P1.transform.position;
+        //_prevBod.transform.position = P2.transform.position;
     }
 
     private void OnDrawGizmos()
