@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace MeadowMateys
@@ -13,6 +14,7 @@ namespace MeadowMateys
         [SerializeField] private float maxDistance;
         [SerializeField] private LayerMask levelLayerMask;
         [SerializeField] private Transform otherPlayer;
+        [SerializeField] private bool isRopeAttached = false;
 
         private bool _isLadder;
         private bool _isClimbing;
@@ -54,18 +56,23 @@ namespace MeadowMateys
                 _spriteRenderer.flipX = true;
             }
 
-            transform.position += currentMove;
-            float distance = Vector2.Distance(transform.position, otherPlayer.position);
-            if (distance >= maxDistance)
+            //--- Rope control ---//
+            if (isRopeAttached)
             {
-                otherPlayer.position += currentMove;
-            }
-            distance = Vector2.Distance(transform.position, otherPlayer.position);
-            while (distance >= maxDistance)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
+                transform.position += currentMove;
+                float distance = Vector2.Distance(transform.position, otherPlayer.position);
+                if (distance >= maxDistance)
+                {
+                    otherPlayer.position += currentMove;
+                }
                 distance = Vector2.Distance(transform.position, otherPlayer.position);
+                while (distance >= maxDistance)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
+                    distance = Vector2.Distance(transform.position, otherPlayer.position);
+                }
             }
+            else transform.position += currentMove;
 
             if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing) // Jump
             {

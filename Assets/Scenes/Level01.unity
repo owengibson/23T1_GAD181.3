@@ -12432,6 +12432,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   otherPlayer: {fileID: 6416195212173031464}
+  isRopeAttached: 1
 --- !u!61 &8114040485531137526
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12499,6 +12500,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   otherPlayer: {fileID: 4335262782978686700}
+  isRopeAttached: 1
 --- !u!61 &8795590054616069641
 BoxCollider2D:
   m_ObjectHideFlags: 0
