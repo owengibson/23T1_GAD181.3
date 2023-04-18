@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace MeadowMateys
 {
     public class SimplePlayerMovement : MonoBehaviour
     {
-        [SerializeField] private KeyCode leftKey, rightKey, jumpKey, crouchKey, increaseRopeKey, decreaseRopeKey;
+        [SerializeField] private KeyCode leftKey, rightKey, jumpKey, crouchKey, increaseRopeKey, decreaseRopeKey, attachRopeKey;
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpStrength;
         [SerializeField] private float climbSpeed;
@@ -18,11 +20,14 @@ namespace MeadowMateys
 
         private bool _isLadder;
         private bool _isClimbing;
+        private bool _isRopeAttachOnCooldown = false;
+        private float _distance;
 
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _spriteRenderer;
         private BoxCollider2D _boxCollider2D;
         private Animator _animator;
+        private LineRenderer _lineRenderer;
 
         private void Start()
         {
@@ -30,12 +35,23 @@ namespace MeadowMateys
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _boxCollider2D = GetComponent<BoxCollider2D>();
             _animator = GetComponent<Animator>();
+            _lineRenderer = GetComponentInChildren<LineRenderer>();
         }
         private void Update()
         {
             if (_isLadder && (Input.GetKey(jumpKey) || Input.GetKey(crouchKey)))
             {
                 _isClimbing = true;
+            }
+
+            _distance = Vector2.Distance(transform.position, otherPlayer.position);
+            if (Input.GetKeyDown(attachRopeKey) && !_isRopeAttachOnCooldown && _distance < 5f && _lineRenderer != null)
+            {
+                StartCoroutine(CooldownRopeAttach());
+                Debug.Log("Attaching rope");
+                maxDistance = 5f;
+                isRopeAttached = !isRopeAttached;
+                _lineRenderer.enabled = !_lineRenderer.enabled;
             }
         }
         private void FixedUpdate()
@@ -60,16 +76,16 @@ namespace MeadowMateys
             if (isRopeAttached)
             {
                 transform.position += currentMove;
-                float distance = Vector2.Distance(transform.position, otherPlayer.position);
-                if (distance >= maxDistance)
+                _distance = Vector2.Distance(transform.position, otherPlayer.position);
+                if (_distance >= maxDistance)
                 {
                     otherPlayer.position += currentMove;
                 }
-                distance = Vector2.Distance(transform.position, otherPlayer.position);
-                while (distance >= maxDistance)
+                _distance = Vector2.Distance(transform.position, otherPlayer.position);
+                while (_distance >= maxDistance)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
-                    distance = Vector2.Distance(transform.position, otherPlayer.position);
+                    _distance = Vector2.Distance(transform.position, otherPlayer.position);
                 }
 
                 if(Input.GetKey(increaseRopeKey) && maxDistance <= 5f)
@@ -146,6 +162,14 @@ namespace MeadowMateys
                 _isClimbing = false;
                 _rigidbody.gravityScale = 3f;
             }
+        }
+
+        private IEnumerator CooldownRopeAttach()
+        {
+            _isRopeAttachOnCooldown = true;
+            yield return new WaitForSecondsRealtime(2f);
+            _isRopeAttachOnCooldown = false;
+            yield break;
         }
     }
 }
