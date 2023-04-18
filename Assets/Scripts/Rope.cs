@@ -63,8 +63,8 @@ public class Rope : MonoBehaviour
     {
         distanceBetweenEnds = Vector2.Distance(hook.transform.position, _lastSeg.transform.position);
 
-        _hookHingeJoint2D.connectedAnchor = P1.transform.position;
-        _lastSegHingeJoint2D.connectedAnchor = P2.transform.position;
+        //_hookHingeJoint2D.connectedAnchor = P1.transform.position;
+        //_lastSegHingeJoint2D.connectedAnchor = P2.transform.position;
     }
 
     private void OnDrawGizmos()
