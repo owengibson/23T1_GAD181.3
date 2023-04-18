@@ -4,30 +4,45 @@ using UnityEngine;
 
 public class ThrowBunny : MonoBehaviour
 {
-    [SerializeField] private KeyCode pickUpKey;
-    [SerializeField] private KeyCode throwKey;
+    [SerializeField] private KeyCode pickUpKeyP1;
+    [SerializeField] private KeyCode throwKeyP1;
+    [SerializeField] private KeyCode pickUpKeyP2;
+    [SerializeField] private KeyCode throwKeyP2;
     [SerializeField] private Transform pickUpPoint;
-    [SerializeField] private Transform raycastPoint;
-
+    public Vector2 offset;
     [SerializeField] private float rayDistance;
 
     private GameObject grabObject;
 
-    private int layerIndex;
+    private int layerIndexP2;
+    private int layerIndexP1;
 
     private void Start()
     {
-        layerIndex = LayerMask.NameToLayer("Player");
+        layerIndexP1 = LayerMask.NameToLayer("Player");
+        layerIndexP2 = LayerMask.NameToLayer("Player");
+
     }
 
 
     private void Update()
     {
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(raycastPoint.position, transform.right, rayDistance);
 
-        if (raycastHit2D.collider != null && raycastHit2D.collider.gameObject.layer == layerIndex)
+        Vector2 rayDirection = transform.right;
+        if (transform.localScale.x < 0)
         {
-            if (Input.GetKeyDown(pickUpKey) && grabObject == null)
+            // if the player is facing left, flip the direction of the RayCast
+            rayDirection *= -1;
+        }
+
+        Vector2 rayStartPoint = transform.position + transform.forward + transform.right * offset.x + transform.up * offset.y;
+
+
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(rayStartPoint, transform.right, rayDistance);
+
+        if (raycastHit2D.collider != null && raycastHit2D.collider.gameObject.layer == layerIndexP2)
+        {
+            if (Input.GetKeyDown(pickUpKeyP1) && grabObject == null)
             {
                 grabObject = raycastHit2D.collider.gameObject;
                 grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
@@ -37,10 +52,30 @@ public class ThrowBunny : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(throwKey))
+        if (Input.GetKeyDown(throwKeyP1))
         {
             ThrowGrabObject();
         }
+
+ 
+        if (raycastHit2D.collider != null && raycastHit2D.collider.gameObject.layer == layerIndexP1)
+        {
+            if (Input.GetKeyDown(pickUpKeyP2) && grabObject == null)
+            {
+                grabObject = raycastHit2D.collider.gameObject;
+                grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                grabObject.transform.position = pickUpPoint.position;
+                grabObject.transform.SetParent(transform);
+            }
+
+        }
+
+        if (Input.GetKeyDown(throwKeyP2))
+        {
+            ThrowGrabObject();
+        }
+
+        Debug.DrawRay(transform.position, raycastHit2D.point, Color.red);
 
     }
 
