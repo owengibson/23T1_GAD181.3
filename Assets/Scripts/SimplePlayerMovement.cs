@@ -7,7 +7,7 @@ namespace MeadowMateys
 {
     public class SimplePlayerMovement : MonoBehaviour
     {
-        [SerializeField] private KeyCode leftKey, rightKey, jumpKey, crouchKey;
+        [SerializeField] private KeyCode leftKey, rightKey, jumpKey, crouchKey, increaseRopeKey, decreaseRopeKey;
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpStrength;
         [SerializeField] private float climbSpeed;
@@ -71,9 +71,21 @@ namespace MeadowMateys
                     transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
                     distance = Vector2.Distance(transform.position, otherPlayer.position);
                 }
+
+                if(Input.GetKey(increaseRopeKey) && maxDistance <= 5f)
+                {
+                    maxDistance += 0.1f;
+                    Debug.Log(maxDistance);
+                }
+                else if (Input.GetKey(decreaseRopeKey) && maxDistance >= 2f)
+                {
+                    maxDistance -= 0.1f;
+                    Debug.Log(maxDistance);
+                }
             }
             else transform.position += currentMove;
 
+            //--- Jump and climb ---//
             if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing) // Jump
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpStrength);

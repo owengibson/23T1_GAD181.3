@@ -15,6 +15,8 @@ public class Rope : MonoBehaviour
     private List<GameObject> _ropeSegments = new List<GameObject>();
     private GameObject _lastSeg;
     private Vector2 _ropeEndPos;
+    private HingeJoint2D _hookHingeJoint2D;
+    private HingeJoint2D _lastSegHingeJoint2D;
 
     [SerializeField] private GameObject P1;
     [SerializeField] private GameObject P2;
@@ -29,6 +31,8 @@ public class Rope : MonoBehaviour
     private void GenerateRope()
     {
         _prevBod = hook;
+        _hookHingeJoint2D = hook.GetComponent<HingeJoint2D>();
+
         for (int i = 0; i < numLinks; i++)
         {
             GameObject newSeg = Instantiate(prefabRopeSeg);
@@ -42,20 +46,25 @@ public class Rope : MonoBehaviour
         }
         _ropeEndPos = new Vector2(_prevBod.GetComponent<SpriteRenderer>().bounds.center.x, _prevBod.GetComponent<SpriteRenderer>().bounds.min.y);
 
-        _lastSeg = Instantiate(prefabLastSeg);
-        _lastSeg.transform.parent = transform;
-        _lastSeg.transform.position = transform.position;
-        HingeJoint2D lastHj = _lastSeg.GetComponent<HingeJoint2D>();
-        lastHj.connectedBody = _prevBod;
-        //_prevBod = lastHj.connectedBody;
-        lastHj.connectedAnchor = _ropeEndPos;
-        _ropeSegments.Add(_lastSeg);
+        //_lastSeg = Instantiate(prefabLastSeg);
+        //_lastSeg.transform.parent = transform;
+        //_lastSeg.transform.position = transform.position;
+        //HingeJoint2D lastHj = _lastSeg.GetComponent<HingeJoint2D>();
+        //lastHj.connectedBody = _prevBod;
+        ////_prevBod = lastHj.connectedBody;
+        ////lastHj.connectedAnchor = _ropeEndPos;
+        //_ropeSegments.Add(_lastSeg);
+        //_lastSegHingeJoint2D = _lastSeg.GetComponent<HingeJoint2D>();
+
+        _lastSeg = _prevBod.gameObject;
+        _lastSegHingeJoint2D = _lastSeg.GetComponent<HingeJoint2D>();
     }
     private void FixedUpdate()
     {
-        //hook.transform.position = P1.transform.position;
-        //_prevBod.transform.position = P2.transform.position;
         distanceBetweenEnds = Vector2.Distance(hook.transform.position, _lastSeg.transform.position);
+
+        _hookHingeJoint2D.connectedAnchor = P1.transform.position;
+        _lastSegHingeJoint2D.connectedAnchor = P2.transform.position;
     }
 
     private void OnDrawGizmos()
