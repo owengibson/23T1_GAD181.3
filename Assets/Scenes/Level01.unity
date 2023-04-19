@@ -15211,10 +15211,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpKeyP1: 0
   throwKeyP1: 0
+<<<<<<< Updated upstream
   pickUpKeyP2: 303
   throwKeyP2: 13
   pickUpPoint: {fileID: 1652238065}
   offset: {x: 0, y: 0}
+=======
+  pickUpKeyP2: 127
+  throwKeyP2: 281
+  pickUpPoint: {fileID: 1652238065}
+  offset: {x: 1, y: 0}
+>>>>>>> Stashed changes
   rayDistance: 0.2
 --- !u!114 &8795590054616069640
 MonoBehaviour:
@@ -15287,5 +15294,9 @@ MonoBehaviour:
   pickUpKeyP2: 0
   throwKeyP2: 0
   pickUpPoint: {fileID: 1730147204}
+<<<<<<< Updated upstream
   offset: {x: 0, y: 0}
+=======
+  offset: {x: 1, y: 0}
+>>>>>>> Stashed changes
   rayDistance: 0.2
