@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace MeadowMateys
 {
@@ -47,7 +42,6 @@ namespace MeadowMateys
             _distance = Vector2.Distance(transform.position, otherPlayer.position);
             if (Input.GetKeyDown(attachRopeKey) && !_isRopeAttachOnCooldown && _distance < 5f && _lineRenderer != null)
             {
-                StartCoroutine(CooldownRopeAttach());
                 Debug.Log("Attaching rope");
                 maxDistance = 5f;
                 isRopeAttached = !isRopeAttached;
@@ -101,6 +95,12 @@ namespace MeadowMateys
             }
             else transform.position += currentMove;
 
+            //if (isRopeAttached)
+            //{
+                // if distance between this character and other character is greater than _maxDistance
+                // _rigidbody.velocity = new Vector3(otherCharacter.transform.position - transform.position) * Time.fixedDeltaTime * ropePullSpeed;
+            //}
+
             //--- Jump and climb ---//
             if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing) // Jump
             {
@@ -127,7 +127,7 @@ namespace MeadowMateys
             else _animator.SetFloat("Speed", 0);
 
             //Jump animation
-            if (Mathf.Abs(_rigidbody.velocity.y) > 0.01f && !_isClimbing)
+            if (Mathf.Abs(_rigidbody.velocity.y) > 0.01f && !_isClimbing && !IsGrounded())
             {
                 _animator.SetBool("isJumping", true);
             }
@@ -162,14 +162,6 @@ namespace MeadowMateys
                 _isClimbing = false;
                 _rigidbody.gravityScale = 3f;
             }
-        }
-
-        private IEnumerator CooldownRopeAttach()
-        {
-            _isRopeAttachOnCooldown = true;
-            yield return new WaitForSecondsRealtime(2f);
-            _isRopeAttachOnCooldown = false;
-            yield break;
         }
     }
 }
