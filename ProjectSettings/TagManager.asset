@@ -7,7 +7,6 @@ TagManager:
   - Ground
   - Rope
   - Ladder
-  - Player Two
   layers:
   - Default
   - TransparentFX

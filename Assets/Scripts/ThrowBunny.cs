@@ -1,70 +1,92 @@
-using MeadowMateys;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ThrowBunny : MonoBehaviour
 {
-    [SerializeField] private KeyCode _interactKey;
-    private bool _isHolding = false;
-    private bool canPickUp = false;
-    [SerializeField] private Transform _pickUpPoint;
-    [SerializeField] private GameObject pickUpTrigger;
-    [SerializeField] private GameObject _grabObject;
-    public SimplePlayerMovement simplePlayerMovement;
+    [SerializeField] private KeyCode pickUpKeyP1;
+    [SerializeField] private KeyCode throwKeyP1;
+    [SerializeField] private KeyCode pickUpKeyP2;
+    [SerializeField] private KeyCode throwKeyP2;
+    [SerializeField] private Transform pickUpPoint;
+    public Vector2 offset;
+    [SerializeField] private float rayDistance;
+
+    private GameObject grabObject;
+
+    private int layerIndexP2;
+    private int layerIndexP1;
+
+    private void Start()
+    {
+        layerIndexP1 = LayerMask.NameToLayer("Player");
+        layerIndexP2 = LayerMask.NameToLayer("Player");
+
+    }
 
 
- 
     private void Update()
     {
-        if(canPickUp == true && Input.GetKeyDown(_interactKey))
+
+        Vector2 rayDirection = transform.right;
+        if (transform.localScale.x < 0)
         {
-            PickUpObject();
+            // if the player is facing left, flip the direction of the RayCast
+            rayDirection *= -1;
         }
 
-        if (_isHolding == true && Input.GetKeyDown(_interactKey) && canPickUp == false)
+        Vector2 rayStartPoint = transform.position + transform.forward + transform.right * offset.x + transform.up * offset.y;
+
+
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(rayStartPoint, transform.right, rayDistance);
+
+        if (raycastHit2D.collider != null && raycastHit2D.collider.gameObject.layer == layerIndexP2)
+        {
+            if (Input.GetKeyDown(pickUpKeyP1) && grabObject == null)
+            {
+                grabObject = raycastHit2D.collider.gameObject;
+                grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                grabObject.transform.position = pickUpPoint.position;
+                grabObject.transform.SetParent(transform);
+            }
+
+        }
+
+        if (Input.GetKeyDown(throwKeyP1))
         {
             ThrowGrabObject();
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Player 2 Entered Trigger");
-
-        if (collision.CompareTag("Player"))
+ 
+        if (raycastHit2D.collider != null && raycastHit2D.collider.gameObject.layer == layerIndexP1)
         {
-            canPickUp = true;
-        }
-    }
+            if (Input.GetKeyDown(pickUpKeyP2) && grabObject == null)
+            {
+                grabObject = raycastHit2D.collider.gameObject;
+                grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                grabObject.transform.position = pickUpPoint.position;
+                grabObject.transform.SetParent(transform);
+            }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        }
+
+        if (Input.GetKeyDown(throwKeyP2))
         {
-            canPickUp = false;
+            ThrowGrabObject();
         }
-    }
 
-    private void PickUpObject()
-    {
-        _isHolding = true;
-        _grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
-        _grabObject.transform.position = _pickUpPoint.position;
-        _grabObject.transform.SetParent(transform);
-        simplePlayerMovement.enabled = false;
-        // set animation trigger to be on
+        Debug.DrawRay(transform.position, raycastHit2D.point, Color.red);
+
     }
 
     private void ThrowGrabObject()
     {
-        _grabObject.GetComponent<Rigidbody2D>().isKinematic = false;
-        _grabObject.transform.SetParent(null);
-        _isHolding = false;
-        simplePlayerMovement.enabled = true;
-        // set animation trigger to be off
+        if (grabObject == null) return;
 
-        Rigidbody2D rb = _grabObject.GetComponent<Rigidbody2D>();
+        grabObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        grabObject.transform.SetParent(null);
+
+        Rigidbody2D rb = grabObject.GetComponent<Rigidbody2D>();
         float throwDistance = 10f;
         float throwHeight = 15f;
         float throwAngle = Mathf.Atan((4f * throwHeight) / throwDistance) * Mathf.Rad2Deg;
@@ -74,6 +96,6 @@ public class ThrowBunny : MonoBehaviour
         throwVelocity.y = Mathf.Sin(throwRadians) * throwHeight;
 
         rb.velocity = throwVelocity;
-
+        grabObject = null;
     }
 }
