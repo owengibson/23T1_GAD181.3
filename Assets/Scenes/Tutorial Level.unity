@@ -487,6 +487,7 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &524573581
 =======
 --- !u!1 &485629594
@@ -660,6 +661,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 =======
 >>>>>>> parent of 247bc4b (fixed the throw mechanic)
+=======
+>>>>>>> parent of bca8b40 (Update Tutorial Level.unity)
 --- !u!1 &600207920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,6 +1118,7 @@ Transform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &1092107784
 =======
 --- !u!1 &1179623169
@@ -1288,6 +1292,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 =======
 >>>>>>> parent of 247bc4b (fixed the throw mechanic)
+=======
+>>>>>>> parent of bca8b40 (Update Tutorial Level.unity)
 --- !u!1 &1268510429
 GameObject:
   m_ObjectHideFlags: 0
