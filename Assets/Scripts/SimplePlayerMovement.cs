@@ -19,6 +19,7 @@ namespace MeadowMateys
         private float _distance;
 
         private Rigidbody2D _rigidbody;
+        private Rigidbody2D _otherPlayerRigidbody;
         private SpriteRenderer _spriteRenderer;
         private BoxCollider2D _boxCollider2D;
         private Animator _animator;
@@ -27,6 +28,7 @@ namespace MeadowMateys
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _otherPlayerRigidbody = otherPlayer.GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _boxCollider2D = GetComponent<BoxCollider2D>();
             _animator = GetComponent<Animator>();
@@ -50,35 +52,38 @@ namespace MeadowMateys
         }
         private void FixedUpdate()
         {
-            Vector3 currentMove = Vector3.zero;
+            Vector3 currentMove = new Vector3(0f, _rigidbody.velocity.y, 0f);
 
             float lastXPos;
             lastXPos = transform.position.x;
 
             if (Input.GetKey(rightKey)) // Move right
             {
-                currentMove = new Vector3(moveSpeed, 0, 0);
+                currentMove = new Vector3(moveSpeed, _rigidbody.velocity.y, 0);
                 _spriteRenderer.flipX = false;
             }
             else if (Input.GetKey(leftKey)) // Move left
             {
-                currentMove = new Vector3(-moveSpeed, 0, 0);
+                currentMove = new Vector3(-moveSpeed, _rigidbody.velocity.y, 0);
                 _spriteRenderer.flipX = true;
             }
 
             //--- Rope control ---//
             if (isRopeAttached)
             {
-                transform.position += currentMove;
+                _rigidbody.velocity = currentMove;
                 _distance = Vector2.Distance(transform.position, otherPlayer.position);
                 if (_distance >= maxDistance)
                 {
-                    otherPlayer.position += currentMove;
+                    _otherPlayerRigidbody.velocity = currentMove;
                 }
                 _distance = Vector2.Distance(transform.position, otherPlayer.position);
                 while (_distance >= maxDistance)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
+                    //transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
+                    Vector3 direction = (transform.position - otherPlayer.position).normalized;
+                    //_otherPlayerRigidbody.AddForce(direction); ---- THIS LINE CRASHES UNITY
+
                     _distance = Vector2.Distance(transform.position, otherPlayer.position);
                 }
 
@@ -93,7 +98,7 @@ namespace MeadowMateys
                     Debug.Log(maxDistance);
                 }
             }
-            else transform.position += currentMove;
+            else _rigidbody.velocity = currentMove;
 
             //if (isRopeAttached)
             //{
@@ -120,7 +125,7 @@ namespace MeadowMateys
             //---------ANIMATION CONTROL-----------//
 
             //Walk animation
-            if (transform.position.x != lastXPos)
+            if (Mathf.Abs(_rigidbody.velocity.x) != 0)
             {
                 _animator.SetFloat("Speed", 1);
             }

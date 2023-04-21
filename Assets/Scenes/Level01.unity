@@ -15162,7 +15162,7 @@ MonoBehaviour:
   increaseRopeKey: 61
   decreaseRopeKey: 45
   attachRopeKey: 32
-  moveSpeed: 0.15
+  moveSpeed: 8
   jumpStrength: 11
   climbSpeed: 3
   maxDistance: 5
@@ -15209,13 +15209,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab3907cd5675014e827754b82262db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpKeyP1: 0
-  throwKeyP1: 0
-  pickUpKeyP2: 303
-  throwKeyP2: 13
-  pickUpPoint: {fileID: 1652238065}
-  offset: {x: 0, y: 0}
-  rayDistance: 0.2
+  _interactKey: 0
+  _pickUpPoint: {fileID: 0}
+  pickUpTrigger: {fileID: 0}
+  _grabObject: {fileID: 0}
+  simplePlayerMovement: {fileID: 0}
 --- !u!114 &8795590054616069640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15235,7 +15233,7 @@ MonoBehaviour:
   increaseRopeKey: 61
   decreaseRopeKey: 45
   attachRopeKey: 32
-  moveSpeed: 0.15
+  moveSpeed: 8
   jumpStrength: 11
   climbSpeed: 3
   maxDistance: 5
@@ -15282,10 +15280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab3907cd5675014e827754b82262db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpKeyP1: 113
-  throwKeyP1: 101
-  pickUpKeyP2: 0
-  throwKeyP2: 0
-  pickUpPoint: {fileID: 1730147204}
-  offset: {x: 0, y: 0}
-  rayDistance: 0.2
+  _interactKey: 0
+  _pickUpPoint: {fileID: 0}
+  pickUpTrigger: {fileID: 0}
+  _grabObject: {fileID: 0}
+  simplePlayerMovement: {fileID: 0}
