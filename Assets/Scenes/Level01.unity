@@ -3058,7 +3058,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: d1577ca7390133746900db38c2ea8eaf, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -15165,12 +15165,10 @@ MonoBehaviour:
   moveSpeed: 8
   jumpStrength: 11
   climbSpeed: 3
-  maxDistance: 5
   levelLayerMask:
     serializedVersion: 2
     m_Bits: 8
   otherPlayer: {fileID: 6416195212173031464}
-  isRopeAttached: 0
 --- !u!61 &8114040485531137526
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15236,12 +15234,10 @@ MonoBehaviour:
   moveSpeed: 8
   jumpStrength: 11
   climbSpeed: 3
-  maxDistance: 5
   levelLayerMask:
     serializedVersion: 2
     m_Bits: 8
   otherPlayer: {fileID: 4335262782978686700}
-  isRopeAttached: 0
 --- !u!61 &8795590054616069641
 BoxCollider2D:
   m_ObjectHideFlags: 0
