@@ -11,6 +11,8 @@ namespace MeadowMateys
         private List<GameObject> _objectsInTrigger = new List<GameObject>();
         private int _pickupsCollected;
 
+        [SerializeField] private string sceneToLoad;
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Player"))
@@ -19,7 +21,7 @@ namespace MeadowMateys
 
                 if (_objectsInTrigger.Count >= 2 && _pickupsCollected >= 2)
                 {
-                    SceneManager.LoadScene("End");
+                    SceneManager.LoadScene(sceneToLoad);
                 }
             }
         }
