@@ -8,17 +8,18 @@ namespace MeadowMateys
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpStrength;
         [SerializeField] private float climbSpeed;
-        [SerializeField] private float maxDistance;
         [SerializeField] private LayerMask levelLayerMask;
         [SerializeField] private Transform otherPlayer;
-        [SerializeField] private bool isRopeAttached = false;
 
+        private static bool _isRopeAttached = false;
+        private static float _maxDistance = 5f;
         private bool _isLadder;
         private bool _isClimbing;
         private bool _isRopeAttachOnCooldown = false;
         private float _distance;
 
         private Rigidbody2D _rigidbody;
+        private Rigidbody2D _otherPlayerRigidbody;
         private SpriteRenderer _spriteRenderer;
         private BoxCollider2D _boxCollider2D;
         private Animator _animator;
@@ -27,10 +28,14 @@ namespace MeadowMateys
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _otherPlayerRigidbody = otherPlayer.GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _boxCollider2D = GetComponent<BoxCollider2D>();
             _animator = GetComponent<Animator>();
             _lineRenderer = GetComponentInChildren<LineRenderer>();
+
+            _maxDistance = 5f;
+            _isRopeAttached = false;
         }
         private void Update()
         {
@@ -40,62 +45,68 @@ namespace MeadowMateys
             }
 
             _distance = Vector2.Distance(transform.position, otherPlayer.position);
-            if (Input.GetKeyDown(attachRopeKey) && !_isRopeAttachOnCooldown && _distance < 5f && _lineRenderer != null)
+            if (Input.GetKeyDown(attachRopeKey) && !_isRopeAttachOnCooldown && _lineRenderer != null)
             {
-                Debug.Log("Attaching rope");
-                maxDistance = 5f;
-                isRopeAttached = !isRopeAttached;
+                _maxDistance = 5f;
+                _isRopeAttached = !_isRopeAttached;
+                Debug.Log("is rope attached?: " + _isRopeAttached);
                 _lineRenderer.enabled = !_lineRenderer.enabled;
             }
         }
         private void FixedUpdate()
         {
-            Vector3 currentMove = Vector3.zero;
+            Vector3 currentMove = new Vector3(0f, _rigidbody.velocity.y, 0f);
 
             float lastXPos;
             lastXPos = transform.position.x;
 
             if (Input.GetKey(rightKey)) // Move right
             {
-                currentMove = new Vector3(moveSpeed, 0, 0);
+                currentMove = new Vector3(moveSpeed, _rigidbody.velocity.y, 0);
                 _spriteRenderer.flipX = false;
             }
             else if (Input.GetKey(leftKey)) // Move left
             {
-                currentMove = new Vector3(-moveSpeed, 0, 0);
+                currentMove = new Vector3(-moveSpeed, _rigidbody.velocity.y, 0);
                 _spriteRenderer.flipX = true;
             }
 
             //--- Rope control ---//
-            if (isRopeAttached)
+            if (_isRopeAttached && _lineRenderer == null)
             {
-                transform.position += currentMove;
                 _distance = Vector2.Distance(transform.position, otherPlayer.position);
-                if (_distance >= maxDistance)
+                if (_distance >= _maxDistance)
                 {
-                    otherPlayer.position += currentMove;
+                    //_otherPlayerRigidbody.velocity += new Vector2(currentMove.x, currentMove.y);
+                    Vector3 direction = (transform.position - otherPlayer.position).normalized * 1000;
+                    _otherPlayerRigidbody.AddForce(direction);
+                    Debug.Log("Current move: " + currentMove + "| Direction: " + direction + "| Distance: " + _distance);
                 }
-                _distance = Vector2.Distance(transform.position, otherPlayer.position);
-                while (_distance >= maxDistance)
+                else _rigidbody.velocity = currentMove;
+                //_distance = Vector2.Distance(transform.position, otherPlayer.position);
+/*                while (_distance >= _maxDistance)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
-                    _distance = Vector2.Distance(transform.position, otherPlayer.position);
-                }
+                    //transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
+                    Vector3 direction = (transform.position - otherPlayer.position).normalized;
+                    //_otherPlayerRigidbody.AddForce(direction); ---- THIS LINE CRASHES UNITY
 
-                if(Input.GetKey(increaseRopeKey) && maxDistance <= 5f)
+                    _distance = Vector2.Distance(transform.position, otherPlayer.position);
+                }*/
+
+                if (Input.GetKey(increaseRopeKey) && _maxDistance <= 5f)
                 {
-                    maxDistance += 0.1f;
-                    Debug.Log(maxDistance);
+                    _maxDistance += 0.1f;
+                    Debug.Log(_maxDistance);
                 }
-                else if (Input.GetKey(decreaseRopeKey) && maxDistance >= 2f)
+                else if (Input.GetKey(decreaseRopeKey) && _maxDistance >= 2f)
                 {
-                    maxDistance -= 0.1f;
-                    Debug.Log(maxDistance);
+                    _maxDistance -= 0.1f;
+                    Debug.Log(_maxDistance);
                 }
             }
-            else transform.position += currentMove;
+            else _rigidbody.velocity = currentMove;
 
-            //if (isRopeAttached)
+            //if (_isRopeAttached)
             //{
                 // if distance between this character and other character is greater than _maxDistance
                 // _rigidbody.velocity = new Vector3(otherCharacter.transform.position - transform.position) * Time.fixedDeltaTime * ropePullSpeed;
@@ -120,7 +131,7 @@ namespace MeadowMateys
             //---------ANIMATION CONTROL-----------//
 
             //Walk animation
-            if (transform.position.x != lastXPos)
+            if (Mathf.Abs(_rigidbody.velocity.x) != 0)
             {
                 _animator.SetFloat("Speed", 1);
             }

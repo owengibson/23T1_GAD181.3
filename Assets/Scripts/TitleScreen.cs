@@ -7,9 +7,10 @@ namespace MeadowMateys
 {
     public class TitleScreen : MonoBehaviour
     {
+        [SerializeField] private string sceneToLoad;
         public void PlayGame()
         {
-            SceneManager.LoadScene("Level01");
+            SceneManager.LoadScene(sceneToLoad);
         }
     }
 }
