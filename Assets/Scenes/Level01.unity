@@ -426,7 +426,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &163295460
 BoxCollider2D:
@@ -506,7 +506,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &332468246
 GameObject:
@@ -848,7 +848,82 @@ Transform:
   - {fileID: 332468247}
   - {fileID: 1421669123}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &640730396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640730398}
+  - component: {fileID: 640730397}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &640730397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640730396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303bc0ac35620d54e9625ead980dec37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: TitleMusic
+    clip: {fileID: 8300000, guid: 4307f5401b9e014428adc713074f6722, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: LevelMusic
+    clip: {fileID: 8300000, guid: 3af1dc56e31f574459e79b0e0638c8e6, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Ambience
+    clip: {fileID: 8300000, guid: 4189e277c7a613344a294b1b2080de04, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: 823e2c3494dec1f4da09ea074c7de9b3, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Throw
+    clip: {fileID: 8300000, guid: 266bf2f16f8b8c4489ae6efb6eff6c79, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &640730398
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640730396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &663556733
 GameObject:
@@ -965,7 +1040,7 @@ Transform:
   - {fileID: 1634405235}
   - {fileID: 1600682788}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &819901751
 GameObject:
@@ -2608,7 +2683,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1554624852
 GameObject:
@@ -14496,7 +14571,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -14808,7 +14883,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2108676696
 MonoBehaviour:
@@ -15017,7 +15092,7 @@ Transform:
   - {fileID: 663556734}
   - {fileID: 1143098489}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4335262782978686702
 Rigidbody2D:
@@ -15056,7 +15131,7 @@ Transform:
   - {fileID: 1058151083}
   - {fileID: 1378490302}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6416195212173031465
 SpriteRenderer:
@@ -15179,6 +15254,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   otherPlayer: {fileID: 6416195212173031464}
+  audioManager: {fileID: 640730397}
 --- !u!61 &8114040485531137526
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15217,11 +15293,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab3907cd5675014e827754b82262db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactKey: 0
-  _pickUpPoint: {fileID: 0}
-  pickUpTrigger: {fileID: 0}
-  _grabObject: {fileID: 0}
-  simplePlayerMovement: {fileID: 0}
+  pickUpKeyP1: 0
+  throwKeyP1: 0
+  pickUpKeyP2: 0
+  throwKeyP2: 0
+  pickUpPoint: {fileID: 0}
+  offset: {x: 0, y: 0}
+  rayDistance: 0
+  audioManager: {fileID: 640730397}
 --- !u!114 &8795590054616069640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15248,6 +15327,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   otherPlayer: {fileID: 4335262782978686700}
+  audioManager: {fileID: 640730397}
 --- !u!61 &8795590054616069641
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15286,8 +15366,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab3907cd5675014e827754b82262db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactKey: 113
-  _pickUpPoint: {fileID: 1730147204}
-  pickUpTrigger: {fileID: 1378490301}
-  _grabObject: {fileID: 4335262782978686673}
-  simplePlayerMovement: {fileID: 8114040485531137525}
+  pickUpKeyP1: 0
+  throwKeyP1: 0
+  pickUpKeyP2: 0
+  throwKeyP2: 0
+  pickUpPoint: {fileID: 0}
+  offset: {x: 0, y: 0}
+  rayDistance: 0
+  audioManager: {fileID: 640730397}

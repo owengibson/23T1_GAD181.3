@@ -10,6 +10,7 @@ namespace MeadowMateys
         [SerializeField] private float climbSpeed;
         [SerializeField] private LayerMask levelLayerMask;
         [SerializeField] private Transform otherPlayer;
+        [SerializeField] private AudioManager audioManager;
 
         private static bool _isRopeAttached = false;
         private static float _maxDistance = 5f;
@@ -36,6 +37,9 @@ namespace MeadowMateys
 
             _maxDistance = 5f;
             _isRopeAttached = false;
+
+            audioManager.Play("LevelMusic");
+            audioManager.Play("Ambience");
         }
         private void Update()
         {
@@ -83,15 +87,6 @@ namespace MeadowMateys
                     Debug.Log("Current move: " + currentMove + "| Direction: " + direction + "| Distance: " + _distance);
                 }
                 else _rigidbody.velocity = currentMove;
-                //_distance = Vector2.Distance(transform.position, otherPlayer.position);
-/*                while (_distance >= _maxDistance)
-                {
-                    //transform.position = Vector3.MoveTowards(transform.position, otherPlayer.position, moveSpeed);
-                    Vector3 direction = (transform.position - otherPlayer.position).normalized;
-                    //_otherPlayerRigidbody.AddForce(direction); ---- THIS LINE CRASHES UNITY
-
-                    _distance = Vector2.Distance(transform.position, otherPlayer.position);
-                }*/
 
                 if (Input.GetKey(increaseRopeKey) && _maxDistance <= 5f)
                 {
@@ -106,16 +101,11 @@ namespace MeadowMateys
             }
             else _rigidbody.velocity = currentMove;
 
-            //if (_isRopeAttached)
-            //{
-                // if distance between this character and other character is greater than _maxDistance
-                // _rigidbody.velocity = new Vector3(otherCharacter.transform.position - transform.position) * Time.fixedDeltaTime * ropePullSpeed;
-            //}
-
             //--- Jump and climb ---//
             if (Input.GetKey(jumpKey) && IsGrounded() && !_isClimbing) // Jump
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpStrength);
+                audioManager.Play("Jump");
             }
             else if (Input.GetKey(jumpKey) && _isClimbing) // Climb up
             {

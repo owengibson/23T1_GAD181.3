@@ -1,3 +1,4 @@
+using MeadowMateys;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class ThrowBunny : MonoBehaviour
     [SerializeField] private Transform pickUpPoint;
     public Vector2 offset;
     [SerializeField] private float rayDistance;
+    [SerializeField] private AudioManager audioManager;
 
     private GameObject grabObject;
 
@@ -97,5 +99,7 @@ public class ThrowBunny : MonoBehaviour
 
         rb.velocity = throwVelocity;
         grabObject = null;
+
+        audioManager.Play("Throw");
     }
 }
