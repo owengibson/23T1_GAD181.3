@@ -15293,14 +15293,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab3907cd5675014e827754b82262db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpKeyP1: 0
-  throwKeyP1: 0
-  pickUpKeyP2: 0
-  throwKeyP2: 0
-  pickUpPoint: {fileID: 0}
-  offset: {x: 0, y: 0}
-  rayDistance: 0
-  audioManager: {fileID: 640730397}
+  _interactKey: 0
+  _pickUpPoint: {fileID: 0}
+  pickUpTrigger: {fileID: 0}
+  _grabObject: {fileID: 0}
+  simplePlayerMovement: {fileID: 0}
 --- !u!114 &8795590054616069640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15366,11 +15363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab3907cd5675014e827754b82262db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpKeyP1: 0
-  throwKeyP1: 0
-  pickUpKeyP2: 0
-  throwKeyP2: 0
-  pickUpPoint: {fileID: 0}
-  offset: {x: 0, y: 0}
-  rayDistance: 0
-  audioManager: {fileID: 640730397}
+  _interactKey: 113
+  _pickUpPoint: {fileID: 1730147204}
+  pickUpTrigger: {fileID: 1378490301}
+  _grabObject: {fileID: 4335262782978686673}
+  simplePlayerMovement: {fileID: 8114040485531137525}
