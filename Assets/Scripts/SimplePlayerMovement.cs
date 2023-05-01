@@ -55,6 +55,8 @@ namespace MeadowMateys
                 _isRopeAttached = !_isRopeAttached;
                 Debug.Log("is rope attached?: " + _isRopeAttached);
                 _lineRenderer.enabled = !_lineRenderer.enabled;
+
+                audioManager.Play("Rope Attach");
             }
         }
         private void FixedUpdate()

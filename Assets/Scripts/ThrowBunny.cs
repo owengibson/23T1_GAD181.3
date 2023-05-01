@@ -3,77 +3,81 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowBunny : MonoBehaviour
+namespace MeadowMateys
 {
-    [SerializeField] private KeyCode _interactKey;
-    private bool _isHolding = false;
-    private bool canPickUp = false;
-    [SerializeField] private Transform _pickUpPoint;
-    [SerializeField] private GameObject pickUpTrigger;
-    [SerializeField] private GameObject _grabObject;
-    public SimplePlayerMovement simplePlayerMovement;
-
-
-
-    private void Update()
+    public class ThrowBunny : MonoBehaviour
     {
-        if (canPickUp == true && Input.GetKeyDown(_interactKey))
+        [SerializeField] private KeyCode _interactKey;
+        private bool _isHolding = false;
+        private bool canPickUp = false;
+        [SerializeField] private Transform _pickUpPoint;
+        [SerializeField] private GameObject pickUpTrigger;
+        [SerializeField] private GameObject _grabObject;
+        public SimplePlayerMovement simplePlayerMovement;
+
+        [SerializeField] private AudioManager audioManager;
+
+        private void Update()
         {
-            PickUpObject();
+            if (canPickUp == true && Input.GetKeyDown(_interactKey))
+            {
+                PickUpObject();
+            }
+
+            if (_isHolding == true && Input.GetKeyDown(_interactKey) && canPickUp == false)
+            {
+                ThrowGrabObject();
+            }
         }
 
-        if (_isHolding == true && Input.GetKeyDown(_interactKey) && canPickUp == false)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            ThrowGrabObject();
+            Debug.Log("Player 2 Entered Trigger");
+
+            if (collision.CompareTag("Player"))
+            {
+                canPickUp = true;
+            }
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Player 2 Entered Trigger");
-
-        if (collision.CompareTag("Player"))
+        private void OnTriggerExit2D(Collider2D collision)
         {
-            canPickUp = true;
+            if (collision.CompareTag("Player"))
+            {
+                canPickUp = false;
+            }
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        private void PickUpObject()
         {
-            canPickUp = false;
+            _isHolding = true;
+            _grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
+            _grabObject.transform.position = _pickUpPoint.position;
+            _grabObject.transform.SetParent(transform);
+            simplePlayerMovement.enabled = false;
+            // set animation trigger to be on
         }
-    }
 
-    private void PickUpObject()
-    {
-        _isHolding = true;
-        _grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
-        _grabObject.transform.position = _pickUpPoint.position;
-        _grabObject.transform.SetParent(transform);
-        simplePlayerMovement.enabled = false;
-        // set animation trigger to be on
-    }
+        private void ThrowGrabObject()
+        {
+            _grabObject.GetComponent<Rigidbody2D>().isKinematic = false;
+            _grabObject.transform.SetParent(null);
+            _isHolding = false;
+            simplePlayerMovement.enabled = true;
+            // set animation trigger to be off
 
-    private void ThrowGrabObject()
-    {
-        _grabObject.GetComponent<Rigidbody2D>().isKinematic = false;
-        _grabObject.transform.SetParent(null);
-        _isHolding = false;
-        simplePlayerMovement.enabled = true;
-        // set animation trigger to be off
+            Rigidbody2D rb = _grabObject.GetComponent<Rigidbody2D>();
+            float throwDistance = 10f;
+            float throwHeight = 15f;
+            float throwAngle = Mathf.Atan((4f * throwHeight) / throwDistance) * Mathf.Rad2Deg;
+            float throwRadians = throwAngle * Mathf.Deg2Rad;
+            Vector2 throwDirection = new Vector2(1f, 1f).normalized;
+            Vector2 throwVelocity = throwDirection * throwDistance * Mathf.Cos(throwRadians);
+            throwVelocity.y = Mathf.Sin(throwRadians) * throwHeight;
 
-        Rigidbody2D rb = _grabObject.GetComponent<Rigidbody2D>();
-        float throwDistance = 10f;
-        float throwHeight = 15f;
-        float throwAngle = Mathf.Atan((4f * throwHeight) / throwDistance) * Mathf.Rad2Deg;
-        float throwRadians = throwAngle * Mathf.Deg2Rad;
-        Vector2 throwDirection = new Vector2(1f, 1f).normalized;
-        Vector2 throwVelocity = throwDirection * throwDistance * Mathf.Cos(throwRadians);
-        throwVelocity.y = Mathf.Sin(throwRadians) * throwHeight;
+            rb.velocity = throwVelocity;
 
-        rb.velocity = throwVelocity;
-
+            audioManager.Play("Throw");
+        }
     }
 }
