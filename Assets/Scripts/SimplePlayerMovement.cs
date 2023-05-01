@@ -4,6 +4,7 @@ namespace MeadowMateys
 {
     public class SimplePlayerMovement : MonoBehaviour
     {
+
         [SerializeField] private KeyCode leftKey, rightKey, jumpKey, crouchKey, increaseRopeKey, decreaseRopeKey, attachRopeKey;
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpStrength;
@@ -43,6 +44,8 @@ namespace MeadowMateys
         }
         private void Update()
         {
+
+
             if (_isLadder && (Input.GetKey(jumpKey) || Input.GetKey(crouchKey)))
             {
                 _isClimbing = true;

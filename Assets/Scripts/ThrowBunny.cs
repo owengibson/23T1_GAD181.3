@@ -17,6 +17,11 @@ namespace MeadowMateys
 
         [SerializeField] private AudioManager audioManager;
 
+        private void Start()
+        {
+            simplePlayerMovement.GetComponent<SimplePlayerMovement>();
+        }
+
         private void Update()
         {
             if (canPickUp == true && Input.GetKeyDown(_interactKey))
@@ -50,16 +55,21 @@ namespace MeadowMateys
 
         private void PickUpObject()
         {
+
+            simplePlayerMovement.enabled = false;
+            _grabObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             _isHolding = true;
             _grabObject.GetComponent<Rigidbody2D>().isKinematic = true;
             _grabObject.transform.position = _pickUpPoint.position;
             _grabObject.transform.SetParent(transform);
-            simplePlayerMovement.enabled = false;
             // set animation trigger to be on
         }
 
         private void ThrowGrabObject()
         {
+            simplePlayerMovement.enabled = true;
+
+
             _grabObject.GetComponent<Rigidbody2D>().isKinematic = false;
             _grabObject.transform.SetParent(null);
             _isHolding = false;
