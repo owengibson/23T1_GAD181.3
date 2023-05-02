@@ -20,6 +20,7 @@ namespace MeadowMateys
         private void Start()
         {
             simplePlayerMovement.GetComponent<SimplePlayerMovement>();
+            
         }
 
         private void Update()
