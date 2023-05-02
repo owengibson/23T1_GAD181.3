@@ -149,7 +149,7 @@ namespace MeadowMateys
 
         private bool IsGrounded()
         {
-            RaycastHit2D hit = Physics2D.Raycast(_boxCollider2D.bounds.center, Vector2.down, _boxCollider2D.bounds.extents.y + 0.02f, levelLayerMask);
+            RaycastHit2D hit = Physics2D.Raycast(_boxCollider2D.bounds.center, Vector2.down, _boxCollider2D.bounds.extents.y + 0.5f, levelLayerMask);
             return hit.collider != null;
         }
         private void OnTriggerEnter2D(Collider2D collision)
